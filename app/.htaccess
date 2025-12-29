@@ -1,0 +1,19 @@
+# /app/database/.htaccess
+
+# منع الوصول المباشر إلى هذا المجلد ومحتوياته
+Order Deny,Allow
+Deny from all
+
+# أو باستخدام Apache 2.4+ syntax:
+Require all denied
+
+# السماح بالوصول من السكربتات المحلية فقط
+<FilesMatch "\.(php)$">
+    Order Allow,Deny
+    Allow from 127.0.0.1
+    Allow from localhost
+    # أو للسكربتات المحلية:
+    <IfModule mod_authz_core.c>
+        Require local
+    </IfModule>
+</FilesMatch>
