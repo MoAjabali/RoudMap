@@ -1,15 +1,18 @@
 <?php 
 $pageTitle = "الرئيسية";
 $pageType = "home";
-include_once  __DIR__ . '/assets/layout/header.php'; 
+include_once __DIR__ . '/assets/layout/header.php'; 
+include_once __DIR__ . '/app/controllers/SpecializationsController.php';
+include_once __DIR__ . '/app/helpers/toast.php';
 
-// بيانات تجريبية للتخصصات
-$specializations = [
-    ['id' => 1, 'title' => 'تطوير الواجهات الأمامية', 'icon' => 'fa-code', 'desc' => 'تعلم بناء واجهات المواقع باستخدام HTML, CSS, JS و React.', 'skills_count' => 12, 'resources_count' => 45],
-    ['id' => 2, 'title' => 'تطوير الواجهات الخلفية', 'icon' => 'fa-server', 'desc' => 'اتقن بناء قواعد البيانات والمنطق البرمجي باستخدام PHP, Node.js.', 'skills_count' => 15, 'resources_count' => 60],
-    ['id' => 3, 'title' => 'تطوير تطبيقات الموبايل', 'icon' => 'fa-mobile-alt', 'desc' => 'ابنِ تطبيقات Android و iOS باستخدام Flutter أو React Native.', 'skills_count' => 10, 'resources_count' => 38],
-    ['id' => 4, 'title' => 'الذكاء الاصطناعي', 'icon' => 'fa-chart-bar', 'desc' => 'قم بتصميم نماذج ذاماء اصطناعي توليدية', 'skills_count' => 8, 'resources_count' => 25],
-];
+try{
+    $specializations = indexSpecializations()['data'];
+    $specializations = array_slice($specializations, 0, 4);
+} catch (\Throwable $th) {
+    error_log("getSpecializations error: " . $th->getMessage());
+    showToast($th->getMessage(), 'error', 'حدث خطأ: ');
+    $specializations = [];
+}
 ?>
 
 <!-- Hero Section -->
@@ -20,7 +23,7 @@ $specializations = [
                 <h1 class="mb-4">ارسم مسارك المهني في <span class="text-primary">عالم التقنية</span></h1>
                 <p class="lead text-muted mb-5">اكتشف خرائط تعلم شاملة، مهارات محددة، وأفضل المصادر التعليمية المنسقة بعناية لتبدأ رحلتك البرمجية بثقة.</p>
                 <div class="d-flex justify-content-center gap-3">
-                    <a href="#specializations" class="btn btn-primary btn-lg">ابدأ التعلم الآن</a>
+                    <a href="/specializations" class="btn btn-primary btn-lg">ابدأ التعلم الآن</a>
                     <a href="/about" class="btn btn-outline-primary btn-lg">من نحن؟</a>
                 </div>
             </div>
@@ -44,8 +47,8 @@ $specializations = [
                             <div class="icon-box mb-4 text-primary">
                                 <i class="fas <?php echo $spec['icon']; ?> fa-3x"></i>
                             </div>
-                            <h5 class="card-title mb-3"><?php echo $spec['title']; ?></h5>
-                            <p class="card-text text-muted small mb-4"><?php echo $spec['desc']; ?></p>
+                            <h5 class="card-title mb-3"><?php echo $spec['name']; ?></h5>
+                            <p class="card-text text-muted small mb-4"><?php echo $spec['description']; ?></p>
                             <div class="d-flex justify-content-between text-muted small mb-4">
                                 <span><div><i class="fas fa-list-ul me-1"></i> <?php echo $spec['skills_count']; ?></div> مهارة</span>
                                 <span><div><i class="fas fa-book me-1"></i> <?php echo $spec['resources_count']; ?></div> مصدر</span>
