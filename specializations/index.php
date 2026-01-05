@@ -2,16 +2,16 @@
 $pageTitle = "التخصصات المتاحة";
 $pageType = "specialization";
 include_once __DIR__ . '/../assets/layout/header.php'; 
+include_once __DIR__ . '/../app/controllers/SpecializationsController.php';
+include_once __DIR__ . '/../app/helpers/toast.php';
 
-// بيانات التخصصات - نفس البيانات من index.php
-$specializations = [
-    ['id' => 1, 'title' => 'تطوير الواجهات الأمامية', 'icon' => 'fa-code', 'desc' => 'تعلم بناء واجهات المواقع باستخدام HTML, CSS, JS و React.', 'skills_count' => 12, 'resources_count' => 45],
-    ['id' => 2, 'title' => 'تطوير الواجهات الخلفية', 'icon' => 'fa-server', 'desc' => 'اتقن بناء قواعد البيانات والمنطق البرمجي باستخدام PHP, Node.js.', 'skills_count' => 15, 'resources_count' => 60],
-    ['id' => 3, 'title' => 'تطوير تطبيقات الموبايل', 'icon' => 'fa-mobile-alt', 'desc' => 'ابنِ تطبيقات Android و iOS باستخدام Flutter أو React Native.', 'skills_count' => 10, 'resources_count' => 38],
-    ['id' => 4, 'title' => 'الذكاء الاصطناعي', 'icon' => 'fa-brain', 'desc' => 'قم بتصميم نماذج ذكاء اصطناعي توليدية', 'skills_count' => 8, 'resources_count' => 25],
-    ['id' => 5, 'title' => 'علوم البيانات', 'icon' => 'fa-chart-bar', 'desc' => 'حلل البيانات واستخرج الأنماط باستخدام Python و SQL.', 'skills_count' => 9, 'resources_count' => 30],
-    ['id' => 6, 'title' => 'الأمن السيبراني', 'icon' => 'fa-shield-alt', 'desc' => 'تعلم حماية الأنظمة والشبكات من الهجمات الإلكترونية.', 'skills_count' => 11, 'resources_count' => 35],
-];
+try{
+    $specializations = indexSpecializations()['data'];
+} catch (\Throwable $th) {
+    error_log("getSpecializations error: " . $th->getMessage());
+    showToast($th->getMessage(), 'error', 'حدث خطأ: ');
+    $specializations = [];
+}
 ?>
 
 <div class="container py-5">
@@ -38,8 +38,8 @@ $specializations = [
                     <div class="icon-box mb-4 text-primary">
                         <i class="fas <?php echo $spec['icon']; ?> fa-3x"></i>
                     </div>
-                    <h5 class="card-title mb-3"><?php echo $spec['title']; ?></h5>
-                    <p class="card-text text-muted small mb-4"><?php echo $spec['desc']; ?></p>
+                    <h5 class="card-title mb-3"><?php echo $spec['name']; ?></h5>
+                    <p class="card-text text-muted small mb-4"><?php echo $spec['description']; ?></p>
                     <div class="d-flex justify-content-between text-muted small mb-4">
                         <span><i class="fas fa-list-ul me-1"></i> <?php echo $spec['skills_count']; ?> مهارة</span>
                         <span><i class="fas fa-book me-1"></i> <?php echo $spec['resources_count']; ?> مصدر</span>

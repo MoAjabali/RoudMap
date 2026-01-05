@@ -61,12 +61,12 @@ if($auth && ($_SERVER['REQUEST_URI'] == '/auth/login.php' || $_SERVER['REQUEST_U
                         </a>
                         <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="specialtiesDropdown">
                             <li><a class="dropdown-item" href="/specialization?specializations_id=1"><i class="fas fa-code me-2"></i>تطوير الـfrontend</a></li>
-                            <li><a class="dropdown-item" href="/specialization?specializations_id=1"><i class="fas fa-code me-2"></i>تطوير الـbackend</a></li>
-                            <li><a class="dropdown-item" href="/specialization?specializations_id=1"><i class="fas fa-mobile-alt me-2"></i>تطوير التطبيقات</a></li>
-                            <li><a class="dropdown-item" href="/specialization?specializations_id=1"><i class="fas fa-database me-2"></i>قواعد البيانات</a></li>
+                            <li><a class="dropdown-item" href="/specialization?specializations_id=2"><i class="fas fa-code me-2"></i>تطوير الـbackend</a></li>
+                            <li><a class="dropdown-item" href="/specialization?specializations_id=3"><i class="fas fa-mobile-alt me-2"></i>تطوير التطبيقات</a></li>
+                            <!-- <li><a class="dropdown-item" href="/specialization?specializations_id=1"><i class="fas fa-database me-2"></i>قواعد البيانات</a></li> -->
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/specialization?specializations_id=1"><i class="fas fa-brain me-2"></i>الذكاء الاصطناعي</a></li>
-                            <li><a class="dropdown-item" href="/specialization?specializations_id=1"><i class="fas fa-shield-alt me-2"></i>الأمن السيبراني</a></li>
+                            <li><a class="dropdown-item" href="/specialization?specializations_id=4"><i class="fas fa-brain me-2"></i>الذكاء الاصطناعي</a></li>
+                            <!-- <li><a class="dropdown-item" href="/specialization?specializations_id=1"><i class="fas fa-shield-alt me-2"></i>الأمن السيبراني</a></li> -->
                         </ul>
                     </li>
                     <li class="nav-item">
