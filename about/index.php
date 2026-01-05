@@ -1,7 +1,7 @@
 <?php 
 $pageTitle = "من نحن";
 $pageType = "about";
-include __DIR__ . '/../assets/layout/header.php'; 
+include_once __DIR__ . '/../assets/layout/header.php'; 
 ?>
 
 <div class="container py-5">
@@ -109,4 +109,4 @@ include __DIR__ . '/../assets/layout/header.php';
     </div>
 </div>
 
-<?php include __DIR__ . '/../assets/layout/footer.php'; ?>
+<?php include_once __DIR__ . '/../assets/layout/footer.php'; ?>
