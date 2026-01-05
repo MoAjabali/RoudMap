@@ -2,7 +2,7 @@
 require_once __DIR__ . "/connection.php";
 
 echo "🚀 Start Creating DataBase\n";
-
+$config = getConnection();
 try {
     $dsn = "{$config['driver']}:host={$config['host']};charset={$config['charset']}";
     $pdo = new PDO($dsn, $config['username'], $config['password']);
