@@ -1,14 +1,20 @@
 <?php 
 $pageTitle = "مصادر تعلم HTML5";
-include_once __DIR__ . '/../assets/layout/header.php'; 
+include_once __DIR__ . '/../assets/layout/header.php';
+include_once __DIR__ . '/../app/controllers/SkillsController.php';
+include_once __DIR__ . '/../app/helpers/toast.php';
 
-// بيانات تجريبية للمصادر
-$resources = [
-    ['id' => 1, 'title' => 'دورة HTML5 كاملة - أكاديمية حسوب', 'type' => 'فيديو', 'provider' => 'Hsoub', 'link' => '#', 'rating' => 4.8],
-    ['id' => 2, 'title' => 'دليل HTML الشامل - MDN Web Docs', 'type' => 'مقالة', 'provider' => 'Mozilla', 'link' => '#', 'rating' => 5.0],
-    ['id' => 3, 'title' => 'تعلم HTML في ساعة واحدة', 'type' => 'فيديو', 'provider' => 'YouTube', 'link' => '#', 'rating' => 4.5],
-    ['id' => 4, 'title' => 'تحديات HTML5 التفاعلية', 'type' => 'تطبيق عملي', 'provider' => 'FreeCodeCamp', 'link' => '#', 'rating' => 4.9],
-];
+try{
+    // enum('مقال','فيديو','كتاب','كورس','وثائق','بودكاست')
+    if($_GET){
+        $skill = showSkill($_GET['skills_id'])['data'];
+    } else {
+        redirect("/skills/");
+    }
+} catch (Exception $e) {
+    redirect("/specializations/");
+}
+
 ?>
 
 <div class="container">
@@ -16,8 +22,9 @@ $resources = [
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
-            <li class="breadcrumb-item"><a href="/specializations/">تطوير الواجهات الأمامية</a></li>
-            <li class="breadcrumb-item active" aria-current="page">HTML5</li>
+            <li class="breadcrumb-item"><a href="/specializations">التخصصات</a></li>
+            <li class="breadcrumb-item"><a href="/specialization/?specializations_id=<?=$skill['specialization_id']?>"><?=$skill['specialization_name']?></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><?=$skill['name']?></li>
         </ol>
     </nav>
 
@@ -56,7 +63,7 @@ $resources = [
         <!-- Resources List -->
         <div class="col-lg-9">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold mb-0">مصادر تعلم HTML5</h2>
+                <h2 class="fw-bold mb-0">مصادر تعلم <?=$skill['name']?></h2>
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
                         ترتيب حسب: الأحدث
@@ -69,15 +76,15 @@ $resources = [
             </div>
 
             <div class="row g-3">
-                <?php foreach ($resources as $res): ?>
+                <?php foreach ($skill['resources'] as $res): ?>
                 <div class="col-12">
                     <div class="card resource-card">
                         <div class="card-body d-flex align-items-center">
                             <div class="flex-shrink-0 me-3">
                                 <div class="bg-light p-3 rounded text-primary">
-                                    <?php if($res['type'] == 'فيديو'): ?>
+                                    <?php if($res['type'] == 'فيديو' || $res['type'] == 'بودكاست'): ?>
                                         <i class="fas fa-play-circle fa-2x"></i>
-                                    <?php elseif($res['type'] == 'مقالة'): ?>
+                                    <?php elseif($res['type'] == 'مقال' || $res['type'] == 'كتاب' || $res['type'] == 'وثائق'): ?>
                                         <i class="fas fa-file-alt fa-2x"></i>
                                     <?php else: ?>
                                         <i class="fas fa-laptop-code fa-2x"></i>
@@ -89,10 +96,10 @@ $resources = [
                                     <h5 class="mb-1 fw-bold"><?php echo $res['title']; ?></h5>
                                     <span class="text-warning small"><i class="fas fa-star me-1"></i> <?php echo $res['rating']; ?></span>
                                 </div>
-                                <p class="text-muted small mb-0">بواسطة: <span class="text-dark fw-medium"><?php echo $res['provider']; ?></span> | النوع: <?php echo $res['type']; ?></p>
+                                <p class="text-muted small mb-0">بواسطة: <span class="text-dark fw-medium"><?php echo $res['source_platform']; ?></span> | النوع: <?php echo $res['type']; ?></p>
                             </div>
                             <div class="ms-3">
-                                <a href="<?php echo $res['link']; ?>" target="_blank" class="btn btn-outline-primary btn-sm">انتقل للمصدر</a>
+                                <a href="<?php echo $res['url']; ?>" target="_blank" class="btn btn-outline-primary btn-sm">انتقل للمصدر</a>
                             </div>
                         </div>
                     </div>
