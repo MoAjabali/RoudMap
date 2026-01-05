@@ -1,6 +1,37 @@
 <?php 
+include_once __DIR__ . '/../app/controllers/UserController.php';
+include_once  __DIR__ . '/../app/helpers/toast.php';
+
+$registerSuccess = false;
+$errorMsg = '';
+
+if ($_POST) {
+    try {
+        if ($_POST['password'] !== $_POST['confirm_password']) {
+            throw new Exception("كلمتي المرور غير متطابقتين", 400);
+        }
+
+        if (register($_POST['username'], $_POST['email'], $_POST['password'])) {
+            $registerSuccess = true;
+            $disableRedirect = true; // Prevent header.php from redirecting immediately
+        }
+    } catch (\Throwable $th) {
+        $errorMsg = $th->getMessage();
+    }
+}
+
 $pageTitle = "إنشاء حساب جديد";
-include __DIR__ . '/../assets/layout/header.php'; 
+include_once __DIR__ . '/../assets/layout/header.php'; 
+?>
+
+<?php
+if ($registerSuccess) {
+    showToast("تم إنشاء الحساب بنجاح! سيتم توجيهك الآن.", "success");
+    echo "<script>setTimeout(() => { window.location.href = '/index.php'; }, 2000);</script>";
+}
+if ($errorMsg) {
+    showToast($errorMsg, 'error', 'حدث خطأ');
+}
 ?>
 
 <div class="container">
@@ -11,23 +42,23 @@ include __DIR__ . '/../assets/layout/header.php';
                     <h3 class="fw-bold">انضم إلينا</h3>
                     <p class="text-muted">أنشئ حسابك وابدأ رحلتك التعليمية</p>
                 </div>
-                <form>
+                <form method="post">
                     <div class="mb-3">
-                        <label for="fullname" class="form-label">الاسم الكامل</label>
-                        <input type="text" class="form-control" id="fullname" placeholder="أحمد محمد" required>
+                        <label for="username" class="form-label">اسم المستخدم</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="username" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">البريد الإلكتروني</label>
-                        <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">كلمة المرور</label>
-                        <input type="password" class="form-control" dir="ltr" id="password" placeholder="********" required>
-                        <small class="text-muted">يجب أن تحتوي على 8 أحرف على الأقل</small>
+                        <input type="password" class="form-control" dir="ltr" id="password" name="password" placeholder="********" required>
+                        <small class="text-muted">يجب أن تحتوي على 6 أحرف على الأقل</small>
                     </div>
                     <div class="mb-3">
                         <label for="confirm_password" class="form-label">تأكيد كلمة المرور</label>
-                        <input type="password" class="form-control" dir="ltr" id="confirm_password" placeholder="********" required>
+                        <input type="password" class="form-control" dir="ltr" id="confirm_password" name="confirm_password" placeholder="********" required>
                     </div>
                     <div class="mb-3 form-check">
                         <input class="form-check-input" type="checkbox" id="terms" required>
@@ -45,4 +76,4 @@ include __DIR__ . '/../assets/layout/header.php';
     </div>
 </div>
 
-<?php include __DIR__ . '/../assets/layout/footer.php'; ?>
+<?php include_once __DIR__ . '/../assets/layout/footer.php'; ?>

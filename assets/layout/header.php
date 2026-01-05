@@ -1,5 +1,15 @@
 <?php
-    $auth = false;
+require_once __DIR__ . '/../../app/controllers/UserController.php';
+require_once __DIR__ . '/../../app/helpers/redirect.php';
+
+$auth = isAuth();
+if($auth && ($_SERVER['REQUEST_URI'] == '/auth/login.php' || $_SERVER['REQUEST_URI'] == '/auth/register.php')) {
+    if (!isset($disableRedirect)) {
+        redirectHome();
+    }
+} elseif(!$auth && ($_SERVER['REQUEST_URI'] != '/auth/login.php' && $_SERVER['REQUEST_URI'] != '/auth/register.php')) {
+    redirectLogin();
+}
 ?>
 
 <!DOCTYPE html>
