@@ -2,16 +2,22 @@
 $pageTitle = "خريطة تعلم الواجهات الأمامية";
 $pageType = "specialization";
 include_once __DIR__ . '/../assets/layout/header.php'; 
+include_once __DIR__ . '/../app/controllers/SpecializationsController.php';
+include_once __DIR__ . '/../app/helpers/toast.php';
+include_once __DIR__ . '/../app/helpers/redirect.php';
 
-// بيانات تجريبية للمهارات
-$skills = [
-    ['id' => 1, 'title' => 'HTML5', 'level' => 'مبتدئ', 'resources' => 5, 'time' => '10 ساعات'],
-    ['id' => 2, 'title' => 'CSS3 & Flexbox', 'level' => 'مبتدئ', 'resources' => 8, 'time' => '20 ساعة'],
-    ['id' => 3, 'title' => 'JavaScript Basics', 'level' => 'متوسط', 'resources' => 12, 'time' => '40 ساعة'],
-    ['id' => 4, 'title' => 'Bootstrap 5', 'level' => 'مبتدئ', 'resources' => 4, 'time' => '15 ساعة'],
-    ['id' => 5, 'title' => 'React.js', 'level' => 'متقدم', 'resources' => 15, 'time' => '60 ساعة'],
-    ['id' => 6, 'title' => 'Git & GitHub', 'level' => 'متوسط', 'resources' => 6, 'time' => '10 ساعات'],
-];
+try{
+    if($_GET){
+        $specialization = showSpecialization($_GET['specializations_id'])['data'];
+    } else {
+        redirect("/specializations/");
+    }
+} catch (\Throwable $th) {
+    error_log("getSpecializations error: " . $th->getMessage());
+    showToast($th->getMessage(), 'error', 'حدث خطأ: ');
+    echo "<script>setTimeout(() => { window.location.href = '/index.php'; }, 2000);</script>";
+    $specializations = [];
+}
 ?>
 
 <div class="container">
@@ -20,19 +26,19 @@ $skills = [
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/index.php">الرئيسية</a></li>
             <li class="breadcrumb-item"><a href="/specializations">التخصصات</a></li>
-            <li class="breadcrumb-item active" aria-current="page">تطوير الواجهات الأمامية</li>
+            <li class="breadcrumb-item active" aria-current="page"><?= $specialization['name']; ?></li>
         </ol>
     </nav>
 
     <!-- Specialization Header -->
     <div class="row align-items-center mb-5">
         <div class="col-md-8">
-            <h1 class="fw-bold mb-3">تطوير الواجهات الأمامية (Frontend)</h1>
-            <p class="text-muted lead">هذا المسار مخصص لتعلم كيفية بناء واجهات المستخدم التفاعلية والجميلة للمواقع الإلكترونية. ستتعلم كل شيء من الأساسيات حتى الاحتراف.</p>
+            <h1 class="fw-bold mb-3"><?=$specialization['name']?></h1>
+            <p class="text-muted lead"><?=$specialization['description']?></p>
             <div class="d-flex gap-3 mt-4">
-                <span class="badge-tech"><i class="fas fa-clock me-1"></i> الوقت المقدر: 150 ساعة</span>
-                <span class="badge-tech"><i class="fas fa-layer-group me-1"></i> 12 مهارة</span>
-                <span class="badge-tech"><i class="fas fa-star me-1"></i> مستوى: مبتدئ إلى محترف</span>
+                <span class="badge-tech"><i class="fas fa-clock me-1"></i> الوقت المقدر: <?=$specialization['total_estimated_hours']?> ساعة</span>
+                <span class="badge-tech"><i class="fas fa-layer-group me-1"></i> <?=$specialization['skills_count']?> مهارة</span>
+                <!-- <span class="badge-tech"><i class="fas fa-star me-1"></i> مستوى: مبتدئ إلى محترف</span> -->
             </div>
         </div>
     </div>
@@ -40,21 +46,20 @@ $skills = [
     <!-- Skills Grid -->
     <h3 class="mb-4 fw-bold">المهارات المطلوبة</h3>
     <div class="row g-4">
-        <?php foreach ($skills as $skill): ?>
+        <?php foreach ($specialization['skills'] as $skill): ?>
         <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border-start border-primary border-4">
+            <div class="<?php echo $skill['important'] ? "card h-100 border-start border-primary border-4" : "card h-100 border-start border-secondary border-4"?>">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="card-title mb-0"><?php echo $skill['title']; ?></h5>
+                        <h5 class="card-title mb-0"><?php echo $skill['name']; ?></h5>
                         <span class="badge bg-light text-primary border"><?php echo $skill['level']; ?></span>
                     </div>
-                    <p class="text-muted small mb-4">تعلم أساسيات <?php echo $skill['title']; ?> وكيفية استخدامها في المشاريع الحقيقية.</p>
+                    <p class="text-muted small mb-4"><?php echo $skill['description']; ?></p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="small text-muted">
-                            <span class="me-3"><i class="fas fa-book-open me-1"></i> <?php echo $skill['resources']; ?> مصادر</span>
-                            <span><i class="fas fa-hourglass-half me-1"></i> <?php echo $skill['time']; ?></span>
+                            <span><i class="fas fa-hourglass-half me-1"></i> <?php echo $skill['estimated_hours']; ?></span>
                         </div>
-                        <a href="/skills/?skills_id=<?php echo $skill['id']; ?>" class="btn btn-sm btn-primary">عرض المصادر</a>
+                        <a href="/skills/?skills_id=<?php echo $skill['id']; ?>" class="<?php echo $skill['important'] ? "btn btn-sm btn-primary" : "btn btn-sm btn-secondary"?>">عرض المصادر</a>
                     </div>
                 </div>
             </div>
@@ -63,7 +68,7 @@ $skills = [
     </div>
 
     <!-- Progress Tracker (Placeholder) -->
-    <div class="mt-5 p-4 bg-white rounded shadow-sm border">
+    <!-- <div class="mt-5 p-4 bg-white rounded shadow-sm border">
         <div class="row align-items-center">
             <div class="col-md-8">
                 <h5 class="fw-bold mb-2">تتبع تقدمك في هذا المسار</h5>
@@ -73,7 +78,7 @@ $skills = [
                 <a href="/auth/login.php" class="btn btn-primary">سجل دخولك الآن</a>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
 <?php include_once __DIR__ . '/../assets/layout/footer.php'; ?>
