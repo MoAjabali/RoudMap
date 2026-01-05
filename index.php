@@ -1,7 +1,7 @@
 <?php 
 $pageTitle = "الرئيسية";
 $pageType = "home";
-include_once __DIR__ . '/assets/layout/header.php'; 
+include_once  __DIR__ . '/assets/layout/header.php'; 
 
 // بيانات تجريبية للتخصصات
 $specializations = [
@@ -21,7 +21,7 @@ $specializations = [
                 <p class="lead text-muted mb-5">اكتشف خرائط تعلم شاملة، مهارات محددة، وأفضل المصادر التعليمية المنسقة بعناية لتبدأ رحلتك البرمجية بثقة.</p>
                 <div class="d-flex justify-content-center gap-3">
                     <a href="#specializations" class="btn btn-primary btn-lg">ابدأ التعلم الآن</a>
-                    <a href="#" class="btn btn-outline-primary btn-lg">كيف يعمل الموقع؟</a>
+                    <a href="/about" class="btn btn-outline-primary btn-lg">من نحن؟</a>
                 </div>
             </div>
         </div>
@@ -83,4 +83,4 @@ $specializations = [
     </div>
 </section>
 
-<?php include __DIR__ . '/assets/layout/footer.php'; ?>
+<?php include_once __DIR__ . '/assets/layout/footer.php'; ?>

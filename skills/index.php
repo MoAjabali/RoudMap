@@ -1,6 +1,6 @@
 <?php 
 $pageTitle = "مصادر تعلم HTML5";
-include __DIR__ . '/../assets/layout/header.php'; 
+include_once __DIR__ . '/../assets/layout/header.php'; 
 
 // بيانات تجريبية للمصادر
 $resources = [
@@ -113,4 +113,4 @@ $resources = [
     </div>
 </div>
 
-<?php include __DIR__ . '/../assets/layout/footer.php'; ?>
+<?php include_once __DIR__ . '/../assets/layout/footer.php'; ?>

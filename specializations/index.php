@@ -1,7 +1,7 @@
 <?php 
 $pageTitle = "التخصصات المتاحة";
 $pageType = "specialization";
-include __DIR__ . '/../assets/layout/header.php'; 
+include_once __DIR__ . '/../assets/layout/header.php'; 
 
 // بيانات التخصصات - نفس البيانات من index.php
 $specializations = [
@@ -63,4 +63,4 @@ $specializations = [
     </div>
 </div>
 
-<?php include __DIR__ . '/../assets/layout/footer.php'; ?>
+<?php include_once __DIR__ . '/../assets/layout/footer.php'; ?>

@@ -1,7 +1,7 @@
 <?php 
 $pageTitle = "خريطة تعلم الواجهات الأمامية";
 $pageType = "specialization";
-include __DIR__ . '/../assets/layout/header.php'; 
+include_once __DIR__ . '/../assets/layout/header.php'; 
 
 // بيانات تجريبية للمهارات
 $skills = [
@@ -76,4 +76,4 @@ $skills = [
     </div>
 </div>
 
-<?php include __DIR__ . '/../assets/layout/footer.php'; ?>
+<?php include_once __DIR__ . '/../assets/layout/footer.php'; ?>
